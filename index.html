@@ -413,21 +413,18 @@
             const params = new URLSearchParams(window.location.search);
             const mode = params.get('mode');
             const text = params.get('text');
-            const auto = params.get('auto');
 
             if (mode === 'text' || text) {
                 setSendMode('text');
                 if (text) {
                     document.getElementById('textInput').value = decodeURIComponent(text);
                     handleTextInput();
-                    if (auto === '1') setTimeout(startTransfer, 500);
                 } else {
-                    // No text provided, but in text mode: focus for manual paste or AHK paste
+                    // Focus for manual paste
                     setTimeout(() => document.getElementById('textInput').focus(), 300);
                 }
-            } else if (mode === 'file') {
+            } else if (mode === 'file' || mode === 'send') {
                 setSendMode('file');
-                if (auto === '1') setTimeout(() => document.getElementById('fileInput').click(), 500);
             }
         }
 
@@ -444,8 +441,17 @@
                 switch (e.key.toLowerCase()) {
                     case 's': switchTab('send'); break;
                     case 'r': switchTab('receive'); break;
-                    case 'f': if (state.tab === 'send') setSendMode('file'); break;
-                    case 't': if (state.tab === 'send') setSendMode('text'); break;
+                    case 'f':
+                        if (state.tab !== 'send') switchTab('send');
+                        setSendMode('file');
+                        // Use a short delay to ensure browser register keydown/up properly for input trigger
+                        setTimeout(() => document.getElementById('fileInput').click(), 50);
+                        break;
+                    case 't':
+                        if (state.tab !== 'send') switchTab('send');
+                        setSendMode('text');
+                        setTimeout(() => document.getElementById('textInput').focus(), 50);
+                        break;
                     case ' ':
                         if (state.isTransferring) {
                             e.preventDefault();

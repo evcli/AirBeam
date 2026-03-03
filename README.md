@@ -23,19 +23,20 @@ Then open `http://localhost:8080` in your browser.
 3. **Finish**: Once complete, **Download** the file or **Copy** the received text.
 
 ## ⌨️ Keyboard Shortcuts & Automation
-AirGapQR supports keyboard shortcuts and URL parameters for integration with tools like AutoHotKey:
+AirGapQR supports keyboard shortcuts and URL parameters for seamless integration with automation tools like AutoHotKey:
 
 ### Shortcuts
-- `S` / `R`: Switch Tab
-- `F` / `T`: Switch Send Mode (File/Text)
-- `Enter`: Prepare Beam
-- `Space`: Play/Pause QR
-- `Esc`: Reset / Cancel
+- `S` / `R`: Switch Tab (**S**ender / **R**eceiver)
+- `F`: Switch to **File Mode** and **immediately open file dialog**
+- `T`: Switch to **Text Mode** and **immediately focus textarea**
+- `Enter`: Prepare Beam (when file/text is ready)
+- `Space`: Play/Pause QR playback
+- `Esc`: Reset current state / Close dialog
 
 ### Automation (URL Parameters)
-- `index.html?mode=file&auto=1`: Opens file dialog immediately.
-- `index.html?mode=text`: Opens text mode and focuses input.
-- `index.html?mode=text&text=HELLO&auto=1`: Pre-fills and prepares "HELLO".
+- `?mode=file` or `?mode=send`: Starts in File Mode.
+- `?mode=text`: Starts in Text Mode and focuses input.
+- `?mode=text&text=YourContent`: Pre-fills "YourContent" in text mode. Press `Enter` to start.
 
 ## 🛠 Libs
 - Tailwind CSS 3.4.1
