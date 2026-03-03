@@ -22,6 +22,21 @@ Then open `http://localhost:8080` in your browser.
 2. **Receiver**: Go to the **RECEIVER** tab, click **SCAN NOW**, and point your camera at the sender's screen.
 3. **Finish**: Once complete, **Download** the file or **Copy** the received text.
 
+## ⌨️ Keyboard Shortcuts & Automation
+AirBeam supports keyboard shortcuts and URL parameters for integration with tools like AutoHotKey:
+
+### Shortcuts
+- `S` / `R`: Switch Tab
+- `F` / `T`: Switch Send Mode (File/Text)
+- `Enter`: Prepare Beam
+- `Space`: Play/Pause QR
+- `Esc`: Reset / Cancel
+
+### Automation (URL Parameters)
+- `index.html?mode=file&auto=1`: Opens file dialog immediately.
+- `index.html?mode=text`: Opens text mode and focuses input.
+- `index.html?mode=text&text=HELLO&auto=1`: Pre-fills and prepares "HELLO".
+
 ## 🛠 Libs
 - Tailwind CSS 3.4.1
 - Pako 2.0.3

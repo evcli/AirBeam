@@ -178,6 +178,28 @@
             width: 100% !important;
             height: 100% !important;
         }
+
+        /* Shortcut Badge */
+        .key-badge {
+            background: #e2e8f0;
+            color: #64748b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-weight: bold;
+            border-bottom: 2px solid #cbd5e1;
+            margin: 0 4px;
+        }
+
+        .shortcut-hint {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 2rem;
+            text-align: center;
+            border-top: 1px dashed #e2e8f0;
+            padding-top: 1rem;
+        }
     </style>
 </head>
 
@@ -376,15 +398,76 @@
             textData: "",
             gzippedData: null,
             chunks: [], rangeStart: 0, rangeEnd: 0, frameIdx: 0, isTransferring: false, isPaused: true, tid: "", timer: null, qr: null,
+            tab: 'send',
             recv: { active: false, scanner: null, tid: "", fileName: "", total: 0, received: {}, tempData: [] }
         };
 
         window.onload = () => {
             state.qr = new QRious({ element: document.getElementById('qrcode-canvas'), size: 400, level: 'M' });
             initSliderDrag();
+            processUrlParams();
+            setupHotkeys();
         };
 
+        function processUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            const mode = params.get('mode');
+            const text = params.get('text');
+            const auto = params.get('auto');
+
+            if (mode === 'text' || text) {
+                setSendMode('text');
+                if (text) {
+                    document.getElementById('textInput').value = decodeURIComponent(text);
+                    handleTextInput();
+                    if (auto === '1') setTimeout(startTransfer, 500);
+                } else {
+                    // No text provided, but in text mode: focus for manual paste or AHK paste
+                    setTimeout(() => document.getElementById('textInput').focus(), 300);
+                }
+            } else if (mode === 'file') {
+                setSendMode('file');
+                if (auto === '1') setTimeout(() => document.getElementById('fileInput').click(), 500);
+            }
+        }
+
+        function setupHotkeys() {
+            window.addEventListener('keydown', (e) => {
+                const isTyping = document.activeElement.tagName === 'TEXTAREA' ||
+                    (document.activeElement.tagName === 'INPUT' && document.activeElement.type !== 'range');
+
+                if (isTyping) {
+                    if (e.key === 'Escape') document.activeElement.blur();
+                    return;
+                }
+
+                switch (e.key.toLowerCase()) {
+                    case 's': switchTab('send'); break;
+                    case 'r': switchTab('receive'); break;
+                    case 'f': if (state.tab === 'send') setSendMode('file'); break;
+                    case 't': if (state.tab === 'send') setSendMode('text'); break;
+                    case ' ':
+                        if (state.isTransferring) {
+                            e.preventDefault();
+                            togglePause();
+                        }
+                        break;
+                    case 'enter':
+                        if (state.tab === 'send' && !document.getElementById('btn-start').disabled && !state.isTransferring) {
+                            startTransfer();
+                        }
+                        break;
+                    case 'escape':
+                        if (state.isTransferring) {
+                            resetSender();
+                        }
+                        break;
+                }
+            });
+        }
+
         function switchTab(tab) {
+            state.tab = tab;
             const isSend = tab === 'send';
             document.getElementById('view-send').classList.toggle('hidden', !isSend);
             document.getElementById('view-receive').classList.toggle('hidden', isSend);
@@ -707,6 +790,14 @@
             });
         }
     </script>
+
+    <div class="shortcut-hint max-w-2xl mx-auto">
+        <span class="key-badge">S / R</span> Switch Tab &bull;
+        <span class="key-badge">F / T</span> Send Mode &bull;
+        <span class="key-badge">Enter</span> Prepare &bull;
+        <span class="key-badge">Space</span> Play/Pause &bull;
+        <span class="key-badge">Esc</span> Reset
+    </div>
 </body>
 
 </html>
