@@ -1,45 +1,43 @@
 # AirGapQR 🚀
 
-AirGapQR is a web-based, fully offline tool to transfer files and text between devices using high-capacity QR codes. No internet or cables required.
+**AirGapQR** is a premium, web-based tool for high-capacity, fully offline file/text transfers between devices. By unifying **Fountain (LT-Codes)** and **Sequential** algorithms into a single high-performance SPA, it provides the most robust and responsive cross-device transmission experience possible over pure visual light.
 
-## ✨ Features
-- **Total Privacy**: All data is processed in your browser.
-- **100% Offline**: All dependencies are bundled in the `lib` folder.
-- **Files & Text**: Supports any file type and a convenient "Text Mode" with direct copy.
-- **Fast & Reliable**: Uses Gzip compression and optimized QR chunking.
+## 🔗 Try it Now
+**[https://evcli.github.io/AirGapQR/](https://evcli.github.io/AirGapQR/)**
 
-## � How to Run
-Run a simple local server to start (required for camera access):
+---
 
-```bash
-cd AirGapQR
-python3 -m http.server 8080
-```
-Then open `http://localhost:8080` in your browser.
+## ✨ Pro Features
 
-## 📖 How to Use
-1. **Sender**: Choose **File** or **Text**, click **Prepare Beam**, then click **PLAY**.
-2. **Receiver**: Go to the **RECEIVER** tab, click **SCAN NOW**, and point your camera at the sender's screen.
-3. **Finish**: Once complete, **Download** the file or **Copy** the received text.
+- **SPA Dual-Engine Architecture**: Seamlessly hot-swap between **Fountain Mode** (Drop-loss resilient) and **Classic Mode** (Sequential simplicity) without reloading.
+- **Infinite File Streams**: Powered by the Fountain internal engine, handle large files with zero frame-loss anxiety. 
+- **Smart UX Feedback**: 
+    - **Grid-Collapse**: In the receiver, completed rows automatically hide to reduce visual clutter.
+    - **Row-Indexing**: Precise 1-referenced row labels (1, 21, 41...) for tracking progress.
+    - **Defensive Preparation**: `Enter` key intelligence only triggers re-calculation when data (size/file/text) actually changes.
+- **Full Privacy**: 100% Client-side processing. No server-side storage, no tracking, just local Gzip compression and QR block-gen.
 
-## ⌨️ Keyboard Shortcuts & Automation
-AirGapQR supports keyboard shortcuts and URL parameters for seamless integration with automation tools like AutoHotKey:
+## ⌨️ Pro Keyboard Shortcuts (Optimized)
 
-### Shortcuts
-- `S` / `R`: Switch Tab (**S**ender / **R**eceiver)
-- `F`: Switch to **File Mode** and **immediately open file dialog**
-- `T`: Switch to **Text Mode** and **immediately focus textarea**
-- `Enter`: Prepare Beam (when file/text is ready)
-- `Space`: Play/Pause QR playback
-- `Esc`: Reset current state / Close dialog
+AirGapQR is designed for power users who prefer the keyboard.
 
-### Automation (URL Parameters)
-- `?mode=file` or `?mode=send`: Starts in File Mode.
-- `?mode=text`: Starts in Text Mode and focuses input.
-- `?mode=text&text=YourContent`: Pre-fills "YourContent" in text mode. Press `Enter` to start.
+-   **`S / R`** : Switch Tab (**S**ender / **R**eceiver)
+-   **`F / T`** : Switch Mode (**F**ile Mode / **T**ext Mode) - Automatically triggers file dialog or text focus.
+-   **`Enter`** : **Prepare Beam**. Triggers metadata generation and enters the "Manifest View". Only active when configuration changes to prevent accidental restarts.
+-   **`Space`** : **Play / Pause**. Toggle active QR transmission.
+-   **`Escape`** : **Reset Everything**. Clears file state, UI, and memory for a fresh session.
+-   **`Cmd + R`** : (Mac Only) Fully compatible. Modifiers are respected so you can refresh the page normally.
 
-## 🛠 Libs
-- Tailwind CSS 3.4.1
-- Pako 2.0.3
-- QRious 4.0.2
-- Html5-QRCode 2.3.8
+## 🛠 Project Structure
+
+-   `index.html`: The unified UI entry point and state manager.
+-   `lib/engine-fountain.js`: Core implementation of LT-Codes and PRNG.
+-   `lib/engine-sequential.js`: Classic buffer-slice-index logic.
+-   `lib/`: Offline dependencies (Tailwind, Pako, Html5Qrcode, QRious).
+
+## 📊 Transmission Tip: QR Size vs Speed
+-   **SPEED (FPS)**: Real-time sensitive. Adjusting the slider or typing a new value applies instantly during live transmission.
+-   **QR SIZE (Density)**: Structural. Adjusting this requires a **Manual Re-Prepare** (Press `Enter` or `Prepare`) to re-calculate the segments.
+
+---
+*Created with focus on privacy and pixel-perfect UX.*
